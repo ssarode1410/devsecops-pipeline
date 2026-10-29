@@ -1,13 +1,13 @@
-# Intentionally using an outdated base image for the lab
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Patch base image vulnerabilities caught by Trivy
-RUN pip install --upgrade pip setuptools wheel jaraco.context
+# Upgrade core packaging tools first
+RUN pip install --no-cache-dir --upgrade pip setuptools==78.1.1 wheel
 
+# Copy and install requirements forcefully
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY app.py .
 
